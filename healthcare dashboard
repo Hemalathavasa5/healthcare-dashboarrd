@@ -1,0 +1,324 @@
+// Entry Point: src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './styles/global.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// src/App.jsx
+import React from 'react';
+import AppLayout from './components/Layout/AppLayout';
+
+function App() {
+  return <AppLayout />;
+}
+
+export default App;
+
+// src/components/Layout/AppLayout.jsx
+import React from 'react';
+import Sidebar from '../Sidebar/Sidebar';
+import Header from '../Header/Header';
+import DashboardMainContent from '../Dashboard/DashboardMainContent';
+import styles from './AppLayout.module.css';
+
+const AppLayout = () => {
+  return (
+    <div className={styles.container}>
+      <Sidebar />
+      <div className={styles.main}>
+        <Header />
+        <DashboardMainContent />
+      </div>
+    </div>
+  );
+};
+
+export default AppLayout;
+
+// src/components/Layout/AppLayout.module.css
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #f9fbfe;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+// src/components/Sidebar/Sidebar.jsx
+import React from 'react';
+import { navLinks } from '../../data/navigation';
+import styles from './Sidebar.module.css';
+
+const Sidebar = () => {
+  return (
+    <div className={styles.sidebar}>
+      <div className={styles.logo}>Healthcare<span className={styles.dot}>.</span></div>
+      <div className={styles.section}>General</div>
+      <ul className={styles.navList}>
+        {navLinks.map((link, idx) => (
+          <li key={idx} className={styles.navItem}>
+            <i className={`lucide-${link.icon}`} />
+            {link.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;
+
+// src/components/Sidebar/Sidebar.module.css
+.sidebar {
+  width: 220px;
+  background-color: white;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.dot {
+  color: #3067f0;
+}
+
+.section {
+  font-weight: bold;
+  color: #aaa;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navItem {
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+// src/components/Header/Header.jsx
+import React from 'react';
+import styles from './Header.module.css';
+import avatar from '../../assets/avatar.png';
+
+const Header = () => {
+  return (
+    <div className={styles.header}>
+      <input className={styles.search} placeholder="Search" disabled />
+      <div className={styles.actions}>
+        <button className={styles.plus}>+</button>
+        <img src={avatar} alt="user avatar" className={styles.avatar} />
+      </div>
+    </div>
+  );
+};
+
+export default Header;
+
+// src/components/Header/Header.module.css
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search {
+  flex: 1;
+  max-width: 300px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.plus {
+  background-color: #3067f0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+// src/components/Dashboard/DashboardMainContent.jsx
+import React from 'react';
+import AnatomySection from './AnatomySection';
+import HealthStatusCards from './HealthStatusCards';
+import CalendarView from './CalendarView';
+import UpcomingSchedule from './UpcomingSchedule';
+import ActivityFeed from './ActivityFeed';
+import styles from './DashboardMainContent.module.css';
+
+const DashboardMainContent = () => {
+  return (
+    <div className={styles.dashboard}>
+      <div className={styles.left}>
+        <AnatomySection />
+        <HealthStatusCards />
+        <ActivityFeed />
+      </div>
+      <div className={styles.right}>
+        <CalendarView />
+        <UpcomingSchedule />
+      </div>
+    </div>
+  );
+};
+
+export default DashboardMainContent;
+
+// src/components/Dashboard/DashboardMainContent.module.css
+.dashboard {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.left, .right {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// src/components/Dashboard/AnatomySection.jsx
+import React from 'react';
+import bodyImage from '../../assets/human-body.png';
+
+const AnatomySection = () => {
+  return (
+    <div style={{ background: '#fff', padding: '15px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+      <img src={bodyImage} alt="Human Anatomy" style={{ width: '100%', marginBottom: '10px' }} />
+      <div style={{ color: 'green', fontWeight: 'bold' }}>Healthy Heart</div>
+      <div style={{ color: 'red', fontWeight: 'bold' }}>Lungs Issue</div>
+      <div style={{ color: 'green', fontWeight: 'bold' }}>Healthy Leg</div>
+    </div>
+  );
+};
+
+export default AnatomySection;
+
+// src/components/Dashboard/HealthStatusCards.jsx
+import React from 'react';
+import { healthData } from '../../data/healthData';
+
+const HealthStatusCards = () => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      {healthData.map((item, idx) => (
+        <div key={idx} style={{ background: item.status === 'ok' ? '#e6f7ec' : '#fbeaea', padding: '12px', borderRadius: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
+          <h4 style={{ margin: 0 }}>{item.label}</h4>
+          <p style={{ margin: 0, color: '#666' }}>{item.date}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default HealthStatusCards;
+
+// src/components/Dashboard/CalendarView.jsx
+import React from 'react';
+import { calendarData } from '../../data/calendarData';
+
+const CalendarView = () => {
+  return (
+    <div style={{ background: 'white', padding: '15px', borderRadius: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}>
+      <h3 style={{ marginBottom: '10px' }}>October 2021</h3>
+      <ul style={{ padding: 0, margin: 0, listStyle: 'none' }}>
+        {calendarData.map((day, idx) => (
+          <li key={idx}>{day.date} - {day.time}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default CalendarView;
+
+// src/components/Dashboard/UpcomingSchedule.jsx
+import React from 'react';
+import { appointments } from '../../data/appointments';
+import SimpleAppointmentCard from './SimpleAppointmentCard';
+
+const UpcomingSchedule = () => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      {appointments.map((item, idx) => (
+        <SimpleAppointmentCard key={idx} {...item} />
+      ))}
+    </div>
+  );
+};
+
+export default UpcomingSchedule;
+
+// src/components/Dashboard/ActivityFeed.jsx
+import React from 'react';
+
+const ActivityFeed = () => {
+  return (
+    <div style={{ background: '#fff', padding: '15px', borderRadius: '10px', boxShadow: '0 2px 6px rgba(0,0,0,0.05)' }}>
+      <h4 style={{ marginBottom: '10px' }}>3 appointments this week</h4>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '6px' }}>
+        {[...Array(7)].map((_, i) => (
+          <div key={i} style={{ height: `${20 + i * 5}px`, width: '10px', background: '#5a9', borderRadius: '4px' }}></div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ActivityFeed;
+
+// src/components/Dashboard/SimpleAppointmentCard.jsx
+import React from 'react';
+
+const SimpleAppointmentCard = ({ title, time, icon }) => {
+  return (
+    <div style={{ background: 'white', border: '1px solid #eee', padding: '12px', borderRadius: '10px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <div><strong>{icon} {title}</strong></div>
+      <div>{time}</div>
+    </div>
+  );
+};
+
+export default SimpleAppointmentCard;
